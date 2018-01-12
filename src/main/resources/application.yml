@@ -1,0 +1,48 @@
+server:
+  context-path: /assign
+  error:
+  whitelabel:
+    enabled: false
+  port: 9090
+  
+
+# DB hosts
+mysql:
+  schema: swiggy
+  username: root
+  password: B+t+=:Lli2Nv
+  datasource-driver-class-name: com.mysql.jdbc.Driver
+  datasource-master:
+    host: 127.0.0.1:3306
+    url: "jdbc:mysql://${mysql.datasource-master.host}/${mysql.schema}?useSSL=false&zeroDateTimeBehavior=convertToNull"
+    username: ${mysql.username}
+    password: ${mysql.password}
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: ${mysql.datasource-driver-class-name}
+    hikari:
+      connection-timeout: 30000
+      max-lifetime: 270000000
+      minimum-pool-size: 10
+      maximum-pool-size: 10
+      pool-name: swiggyMasterCP
+  datasource-slave:
+    host: 127.0.0.1:3306
+    url: "jdbc:mysql://${mysql.datasource-slave.host}/${mysql.schema}?useSSL=false&zeroDateTimeBehavior=convertToNull"
+    username: ${mysql.username}
+    password: ${mysql.password}
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: ${mysql.datasource-driver-class-name}
+    hikari:
+      connection-timeout: 30000
+      max-lifetime: 270000000
+      minimum-pool-size: 10
+      maximum-pool-size: 10
+      pool-name: swiggySlaveCP
+
+spring:
+  application:
+    name: delivery-execuitve-assignment
+  profiles:
+    active: default
+    
+    

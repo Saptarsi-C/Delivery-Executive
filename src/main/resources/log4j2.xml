@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="60" status="INFO">
+	<Properties>
+		<Property name="log-path">/opt/customlogs/executiveassignment</Property>
+	</Properties>
+	<Appenders>
+
+		<RollingFile name="ConsoleFile" fileName="${log-path}/executiveassignment-console.log"
+								 filePattern="${log-path}/executiveassignment-console-%d{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout>
+				<pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c %M %L -
+					%msg%n
+				</pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy/>
+			</Policies>
+			<DefaultRolloverStrategy max="4">
+				<Delete basePath="${log-path}" maxDepth="2">
+					<IfFileName glob="*/executiveassignment-console-*.log.gz">
+						<IfLastModified age="15d">
+							<IfAccumulatedFileCount exceeds="4"/>
+						</IfLastModified>
+					</IfFileName>
+				</Delete>
+			</DefaultRolloverStrategy>
+		</RollingFile>
+
+		<Console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout>
+				<pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c %M %L -
+					%msg%n
+				</pattern>
+			</PatternLayout>
+		</Console>
+	</Appenders>
+	<Loggers>
+		<Logger name="org.springframework.web" level="info"
+						additivity="false">
+			<appender-ref ref="ConsoleFile"/>
+			<appender-ref ref="STDOUT"/>
+		</Logger>
+		<Logger name="com.example" level="info" additivity="false">
+			<appender-ref ref="ConsoleFile"/>
+			<appender-ref ref="STDOUT"/>
+		</Logger>
+		<Logger name="org.hibernate.SQL" level="info" additivity="false">
+			<appender-ref ref="STDOUT"/>
+		</Logger>
+		<Root level="info">
+			<appender-ref ref="ConsoleFile"/>
+			<appender-ref ref="STDOUT"/>
+		</Root>
+	</Loggers>
+</Configuration>
