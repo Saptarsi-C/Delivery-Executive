@@ -1,5 +1,5 @@
 server:
-  context-path: /assign
+#  context-path: /assign
   error:
   whitelabel:
     enabled: false

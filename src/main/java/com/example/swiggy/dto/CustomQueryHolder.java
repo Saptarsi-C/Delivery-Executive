@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.example.swiggy.dto.general;
+package com.example.swiggy.dto;
 
 import java.util.Map;
 

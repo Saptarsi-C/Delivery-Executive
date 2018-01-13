@@ -19,7 +19,7 @@ import lombok.Data;
  *
  */
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 @Data
 public class Order {
 
@@ -42,6 +42,9 @@ public class Order {
 	
 	@Column(name  = "order_status")
 	private Byte orderStatus;
+	
+	@Column(name = "order_priority")
+	private Byte orderPriority;
 	
 	@Column(name = "customer_status")
 	private Byte customerStatus;

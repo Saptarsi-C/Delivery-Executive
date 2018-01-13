@@ -25,6 +25,7 @@ import com.example.swiggy.util.general.StringUtil;
  *
  */
 @Transactional
+@SuppressWarnings("unchecked")
 public abstract class AbstractJpaRepo<T> {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractJpaRepo.class);
@@ -54,6 +55,7 @@ public abstract class AbstractJpaRepo<T> {
 		delete(entity);
 	}
 
+	@SuppressWarnings("hiding")
 	public <T> List<T> fetchByQuery(final String queryString, final Map<String, Object> inParamtersMap) {
 		final Query query = slaveEntityManager.createQuery(queryString);
 		for (final Entry<String, Object> currentEntry : inParamtersMap.entrySet()) {
@@ -62,12 +64,10 @@ public abstract class AbstractJpaRepo<T> {
 		return query.getResultList();
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<T> findAll() {
 		return slaveEntityManager.createQuery("from " + clazz.getName()).getResultList();
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<T> findByQuery(final String query) {
 		return slaveEntityManager.createQuery(query).getResultList();
 	}
@@ -145,7 +145,6 @@ public abstract class AbstractJpaRepo<T> {
 		return query.getResultList();
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Object[]> findByNativeQuery(final String queryString) {
 		// TODO Auto-generated method stub
 		try {

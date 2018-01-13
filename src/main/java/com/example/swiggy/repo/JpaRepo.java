@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
-import com.example.swiggy.dto.general.CustomQueryHolder;
+import com.example.swiggy.dto.CustomQueryHolder;
 
 /**
  * @author saptarsichaurashy
@@ -21,6 +21,7 @@ import com.example.swiggy.dto.general.CustomQueryHolder;
  */
 @Transactional
 @Repository
+@SuppressWarnings("unchecked")
 public class JpaRepo<K> extends AbstractJpaRepo<K> {
 
 	public JpaRepo() {
@@ -33,12 +34,10 @@ public class JpaRepo<K> extends AbstractJpaRepo<K> {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T> List<T> findAll(final Class<T> clazz) {
 		return slaveEntityManager.createQuery("from " + clazz.getName()).getResultList();
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T> List<T> findByQuery(final CustomQueryHolder queryHolder) {
 		final Query query = slaveEntityManager.createQuery(queryHolder.getQueryString());
 		if (queryHolder.getInParamMap() != null && !queryHolder.getInParamMap().isEmpty()) {
@@ -49,7 +48,6 @@ public class JpaRepo<K> extends AbstractJpaRepo<K> {
 		return query.getResultList();
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T> T findByQueryAndReturnFirstElement(final CustomQueryHolder queryHolder) {
 		final Query query = slaveEntityManager.createQuery(queryHolder.getQueryString());
 		if (queryHolder.getInParamMap() != null && !queryHolder.getInParamMap().isEmpty()) {

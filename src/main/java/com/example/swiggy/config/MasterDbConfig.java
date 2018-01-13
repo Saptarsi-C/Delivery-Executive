@@ -55,7 +55,7 @@ public class MasterDbConfig {
 	public LocalContainerEntityManagerFactoryBean masterEntityManagerFactory(EntityManagerFactoryBuilder builder,
 			@Qualifier("masterDataSource") DataSource dataSource) {
 		return builder.dataSource(dataSource).packages("com.example.swiggy.entity")
-				.persistenceUnit("embbeddedAnalyticsMaster").build();
+				.persistenceUnit("assignmentMaster").build();
 	}
 
 	/**

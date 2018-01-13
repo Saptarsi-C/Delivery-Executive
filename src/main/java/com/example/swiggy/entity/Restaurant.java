@@ -31,10 +31,10 @@ public class Restaurant {
 	@Column(name = "name")
 	private String name;
 
-	@Column(name = "lat")
+	@Column(name = "latitude")
 	private Float latitude;
 
-	@Column(name = "long")
+	@Column(name = "longitude")
 	private Float longitude;
 
 	@Column(name = "created_at")
