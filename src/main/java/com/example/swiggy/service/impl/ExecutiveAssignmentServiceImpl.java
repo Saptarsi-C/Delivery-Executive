@@ -18,7 +18,9 @@ import com.example.swiggy.dto.ExecutiveDto;
 import com.example.swiggy.dto.LocationDto;
 import com.example.swiggy.dto.OrdersDto;
 import com.example.swiggy.dto.response.AssignmentResponseDto;
+import com.example.swiggy.entity.ExecutiveActivity;
 import com.example.swiggy.entity.Order;
+import com.example.swiggy.enums.ActivityEnum;
 import com.example.swiggy.enums.OrderCycleEnum;
 import com.example.swiggy.repo.JpaRepo;
 import com.example.swiggy.rule.FirstMileAndWaitingTime;
@@ -37,6 +39,9 @@ public class ExecutiveAssignmentServiceImpl implements ExecutiveAssignmentServic
 
 	@Autowired
 	private JpaRepo<Order> jpaRepo;
+	
+	@Autowired
+	private JpaRepo<ExecutiveActivity> executiveRepo;
 
 	@Autowired
 	private FirstMileAndWaitingTime firstMileAndWaitTime;
@@ -67,6 +72,7 @@ public class ExecutiveAssignmentServiceImpl implements ExecutiveAssignmentServic
 		});
 
 		Integer oldResId = null;
+		int k = 0;
 		for (OrdersDto order : orders) {
 
 			if (oldResId != null && order.getResId() == oldResId) {
@@ -79,19 +85,27 @@ public class ExecutiveAssignmentServiceImpl implements ExecutiveAssignmentServic
 					order.getLocationDto());
 			while(!executiveDtoListSorted.isEmpty()) {
 				
-				log.info("Order : " +orders.get(0).getOrderId() + "Assigned to : "+ executiveDtoList.get(0));
-				Order odr = new Order();
-				odr.setId(orders.get(0).getOrderId());
-				odr.setOrderStatus(OrderCycleEnum.RECEIVED.getValue());
-				jpaRepo.update(odr);
+				Integer executiveId = executiveDtoList.get(0).getId();
+				Integer orderId = executiveDtoList.get(k++).getId();
+				log.info("Order : " +orderId + "Assigned to : "+ executiveId);
+				updateOrderExecutiveStatus(executiveId, orderId);
 				executiveDtoList.remove(0);
 			}
-			
 			oldResId = order.getResId();
-
 		}
 
 		return null;
+	}
+
+	private void updateOrderExecutiveStatus(Integer executiveId, Integer orderId) {
+		Order odr = new Order();
+		odr.setId(orderId);
+		odr.setOrderStatus(OrderCycleEnum.RECEIVED.getValue());
+		jpaRepo.update(odr);
+		ExecutiveActivity executiveActivity = new ExecutiveActivity();
+		executiveActivity.setId(executiveId);
+		executiveActivity.setIsBusy(ActivityEnum.BUSY.getValue());
+		executiveRepo.update(executiveActivity);
 	}
 
 	private List<ExecutiveDto> getExecutiveListInSortedOrderOfDistance(List<ExecutiveDto> listDto,
